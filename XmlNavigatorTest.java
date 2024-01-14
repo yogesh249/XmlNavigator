@@ -3,146 +3,166 @@ package abc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class XmlNavigatorTest {
 
-    private Document document;
+	private Document document;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        // Set up your XML document as needed
-        String xmlContent = "<Message>"
-                + "    <WorkInformation>"
-                + "        <Address2>"
-                + "            <FullAddress>T9-103</FullAddress>"
-                + "        </Address2>"
-                + "    </WorkInformation>"
-                + "    <WorkInformation>"
-                + "        <Address>"
-                + "            <fullAddress>T9-104</fullAddress>"
-                + "        </Address>"
-                + "    </WorkInformation>"
-                + "    <WorkInformation>"
-                + "        <Address>"
-                + "            <FullAddress>T9-104</FullAddress>"
-                + "        </Address>"
-                + "    </WorkInformation>"
-                + "    <WorkInformation>"
-                + "        <Address>T9-108</Address>"
-                + "    </WorkInformation>"
-                + "    <Address>"
-                + "            <FullAddress>T9-105</FullAddress>"
-                + "    </Address>"
-                + "    <Address>T9-102</Address>"
-                + "    <Address>T9-104</Address>"
-                + "</Message>";
-        InputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes());
-        document = XmlNavigator.parseXML(inputStream);
-    }
-
-    @Test
-    void testNavigateXMLCase1() {
-        String xmlPath = "WorkInformation.Address";
-        String tagName = "FullAddress";
-        String expected = "T9-104";
-
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-
-        assertEquals(expected, result);
-    }
-    @Test
-    void testNavigateXMLCase2() {
-        String xmlPath = "WorkInformation.Address2";
-        String tagName = "FullAddress";
-        String expected = "T9-103";
-
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-
-        assertEquals(expected, result);
-    }
-
-    @Test
-    void testNavigateXMLCase3() {
-        String xmlPath = "Address";
-        String tagName = "FullAddress";
-        String expected = "T9-105";
-
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-
-        assertEquals(expected, result);
-    }
+	@BeforeEach
+	void setUp() throws Exception {
+		// Set up your XML document as needed
+		String xmlContent = "<Message>"
+		        + "    <WorkInformation>"
+		        + "        <Address2>"
+		        + "            <FullAddress>T9-103</FullAddress>"
+		        + "        </Address2>"
+		        + "    </WorkInformation>"
+		        + "    <WorkInformation>"
+		        + "        <Address>"
+		        + "            <fullAddress>T9-104</fullAddress>"
+		        + "        </Address>"
+		        + "    </WorkInformation>"
+		        + "    <WorkInformation>"
+		        + "        <Address>"
+		        + "            <FullAddress>T9-104</FullAddress>"
+		        + "        </Address>"
+		        + "    </WorkInformation>"
+		        + "    <WorkInformation>"
+		        + "        <Address>T9-108</Address>"
+		        + "    </WorkInformation>"
+		        + "    <Address>"
+		        + "        <FullAddress>T9-105</FullAddress>"
+		        + "    </Address>"
+		        + "    <Address>T9-102</Address>"
+		        + "    <Address>T9-104</Address>"
+		        + "</Message>";
 
 
+		InputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes());
+		document = XmlNavigator.parseXML(inputStream);
+	}
 
-    @Test
-    void testNavigateXMLCase5() {
-        String xmlPath = "WorkInformation";
-        String tagName = "Address";
-        String expected = "T9-108";
+	@Test
+	void testnavigateXML2Case1() {
+		String xmlPath = "WorkInformation.Address";
+		String tagName = "FullAddress";
+		String expected = "T9-104";
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNotNull(result);
+		assertEquals(3, result.size());
+	}
 
-        assertEquals(expected, result);
-    }
+	@Test
+	void testnavigateXML2Case123() {
+		String xmlPath = "WorkInformation.Address.FullAddress";
+		String tagName = "FullAddress";
+		String expected = "T9-104";
 
-    @Test
-    void testNavigateXMLCase6() {
-        String xmlPath = "Message.WorkInformation.Address";
-        String tagName = "FullAddress";
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		assertEquals(expected, result.get(0).getTextContent());
+	}
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-        assertNull(result);
-    }
+	@Test
+	void testnavigateXML2Case2() {
+		String xmlPath = "WorkInformation.Address2";
+		String tagName = "FullAddress";
+		String expected = "T9-103";
 
-    @Test
-    void testNavigateXMLCase7() {
-        String xmlPath = "Message.WorkInformation";
-        String tagName = "FullAddress";
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNotNull(result);
+		assertEquals(1, result.size());
+	}
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
+	@Test
+	void testnavigateXML2Case3() {
+		String xmlPath = "Address";
+		String tagName = "FullAddress";
+		String expected = "T9-105";
 
-        assertNull(result);
-    }
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNotNull(result);
+		assertEquals(3, result.size());
+	}
 
-    @Test
-    void testNavigateXMLCase8() {
-        String xmlPath = "WorkInformation";
-        String tagName = "Address3";
+	@Test
+	void testnavigateXML2Case5() {
+		String xmlPath = "WorkInformation";
+		String tagName = "Address";
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-        assertNull(result);
-    }
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
 
-    @Test
-    void testNavigateXMLCase9() {
-        String xmlPath = "WorkInformation.Address";
-        String tagName = "InvalidTag";
+		assertNotNull(result);
+		assertEquals(4, result.size());
+	}
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
+	@Test
+	void testnavigateXML2Case6() {
+		String xmlPath = "Message.WorkInformation.Address";
+		String tagName = "FullAddress";
 
-        assertNull(result);
-    }
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNull(result);
+	}
 
-    @Test
-    void testNavigateXMLCase10() {
-        String xmlPath = "InvalidPath";
-        String tagName = "FullAddress";
+	@Test
+	void testnavigateXML2Case7() {
+		String xmlPath = "Message.WorkInformation";
+		String tagName = "FullAddress";
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-        assertNull(result);
-    }
-    @Test
-    void testNavigateXMLCase11() {
-        String xmlPath = "InvalidPath1.InvalidPath2";
-        String tagName = "FullAddress";
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
 
-        String result = XmlNavigator.navigateXML(document, xmlPath, tagName);
-        assertNull(result);
-    }
+		assertNull(result);
+	}
+
+	@Test
+	void testnavigateXML2Case8() {
+		String xmlPath = "WorkInformation";
+		String tagName = "Address3";
+
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNotNull(result);
+		assertEquals(4, result.size());
+	}
+
+	@Test
+	void testnavigateXML2Case9() {
+		String xmlPath = "WorkInformation.Address";
+		String tagName = "InvalidTag";
+
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+
+		assertNotNull(result);
+		assertEquals(3, result.size());
+	}
+
+	@Test
+	void testnavigateXML2Case10() {
+		String xmlPath = "InvalidPath";
+		String tagName = "FullAddress";
+
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNull(result);
+
+	}
+
+	@Test
+	void testnavigateXML2Case11() {
+		String xmlPath = "InvalidPath1.InvalidPath2";
+		String tagName = "FullAddress";
+
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		assertNull(result);
+	}
 }
