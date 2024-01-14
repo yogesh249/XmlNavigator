@@ -13,10 +13,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class XmlNavigator {
-	public static List<Node> navigateXML2(Document document, String path, String tagName)
+public class XmlNavigator { 
+	public static List<Node> navigateXML2(Document document, String path)
 	{
-		if(document==null || path==null || tagName==null)
+		if(document==null || path==null)
     	{
     		return null;
     	}
@@ -74,67 +74,7 @@ public class XmlNavigator {
 		}
 		return result;
 	}
-
-
-
-	public static String navigateXML(Document document, String path, String tagName) {
-    	if(document==null || path==null || tagName==null)
-    	{
-    		return null;
-    	}
-        String[] elements = path.split("\\.");
-
-        Node currentNode = document.getDocumentElement(); // Start from the root element
-        List<Node> matchingNodes = new ArrayList<Node>();
-        for (String element : elements) {
-        	
-//            System.out.println("element = " + element);
-            NodeList nodeList=null;
-            if(matchingNodes.isEmpty())
-            {
-            	// This is the first time we entered this loop. so get the child nodes of the rootNode.
-            	nodeList = currentNode.getChildNodes();
-                // Iterate on the ChildNodes and get the list of nodes which match
-                // the current element name.
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    Node node = nodeList.item(i);
-
-                    if (node.getNodeType() == Node.ELEMENT_NODE 
-                    		&& node.getNodeName().equals(element)
-                    		&& countElementChildNodes(node.getChildNodes())!=0) {
-                        //currentNode = node;
-                        //found = true;
-                        //break;
-                    	matchingNodes.add(node);
-                    }
-                }
-//                System.out.println("Matching nodes length = " + matchingNodes.size());
-                if(matchingNodes.isEmpty()) return null;
-            }
-            else
-            {
-            	
-            	List<Node> nextLevelMatchingNodes = new ArrayList<Node>();
-            	for(Node node : matchingNodes) {
-            		nodeList = node.getChildNodes();
-            		for (int i = 0; i < nodeList.getLength(); i++) {
-                        Node childNode = nodeList.item(i);
-
-                        if (childNode.getNodeType() == Node.ELEMENT_NODE 
-                        		&& childNode.getNodeName().equals(element)
-                        		&& countElementChildNodes(node.getChildNodes())!=0) {
-                        	nextLevelMatchingNodes.add(childNode);
-                        }
-                       
-                    }
-            	}
-            	matchingNodes.clear();
-            	matchingNodes.addAll(nextLevelMatchingNodes);
-            }
-        }
-//        System.out.println("Number of nodes found for last but 1 level = " + matchingNodes.size());
-        return findTagNameInChildren(matchingNodes, tagName);
-    }
+	
     private static int countElementChildNodes(NodeList nodeList)
     {
     	int count=0;
@@ -206,10 +146,9 @@ public class XmlNavigator {
 
         Document document = parseXML(inputStream);
         String xmlPath = "WorkInformation.Address";
-        String tagName = "FullAddress";
 
         // Example invocation:
-        List<Node> result = navigateXML2(document, xmlPath, tagName);
+        List<Node> result = navigateXML2(document, xmlPath);
         System.out.println(result);
     }
 }
