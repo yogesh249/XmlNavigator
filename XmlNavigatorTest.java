@@ -54,10 +54,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case1() {
 		String xmlPath = "WorkInformation.Address";
-		String tagName = "FullAddress";
-		String expected = "T9-104";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNotNull(result);
 		assertEquals(3, result.size());
 	}
@@ -65,10 +62,9 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case123() {
 		String xmlPath = "WorkInformation.Address.FullAddress";
-		String tagName = "FullAddress";
 		String expected = "T9-104";
 
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		assertEquals(expected, result.get(0).getTextContent());
@@ -77,10 +73,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case2() {
 		String xmlPath = "WorkInformation.Address2";
-		String tagName = "FullAddress";
-		String expected = "T9-103";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNotNull(result);
 		assertEquals(1, result.size());
 	}
@@ -88,10 +81,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case3() {
 		String xmlPath = "Address";
-		String tagName = "FullAddress";
-		String expected = "T9-105";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNotNull(result);
 		assertEquals(3, result.size());
 	}
@@ -99,9 +89,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case5() {
 		String xmlPath = "WorkInformation";
-		String tagName = "Address";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 
 		assertNotNull(result);
 		assertEquals(4, result.size());
@@ -110,18 +98,14 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case6() {
 		String xmlPath = "Message.WorkInformation.Address";
-		String tagName = "FullAddress";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNull(result);
 	}
 
 	@Test
 	void testnavigateXML2Case7() {
 		String xmlPath = "Message.WorkInformation";
-		String tagName = "FullAddress";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 
 		assertNull(result);
 	}
@@ -129,9 +113,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case8() {
 		String xmlPath = "WorkInformation";
-		String tagName = "Address3";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNotNull(result);
 		assertEquals(4, result.size());
 	}
@@ -139,9 +121,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case9() {
 		String xmlPath = "WorkInformation.Address";
-		String tagName = "InvalidTag";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 
 		assertNotNull(result);
 		assertEquals(3, result.size());
@@ -150,9 +130,7 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case10() {
 		String xmlPath = "InvalidPath";
-		String tagName = "FullAddress";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNull(result);
 
 	}
@@ -160,9 +138,13 @@ class XmlNavigatorTest {
 	@Test
 	void testnavigateXML2Case11() {
 		String xmlPath = "InvalidPath1.InvalidPath2";
-		String tagName = "FullAddress";
-
-		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath, tagName);
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
+		assertNull(result);
+	}
+	@Test
+	void testnavigateXML2Case116() {
+		String xmlPath = "InvalidPath1.InvalidPath2";
+		List<Node> result = XmlNavigator.navigateXML2(document, xmlPath);
 		assertNull(result);
 	}
 }
